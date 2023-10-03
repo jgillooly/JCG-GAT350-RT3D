@@ -18,6 +18,6 @@ namespace nc
 		float m_time;
 		vec2 m_position;
 		std::vector<vec2> positions;
-		bool rotating = false;
+		bool automatic = false;
 	};
 }
