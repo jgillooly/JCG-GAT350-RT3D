@@ -1,6 +1,6 @@
 #pragma once
 #include "Framework/World.h"
-#include "Core/Math/Vector2.h"
+#include "Core/Math/Vector3.h"
 #include "Renderer/Renderer.h"
 #include <vector>
 
@@ -17,8 +17,9 @@ namespace nc
 	private:
 		float m_angle = 0;
 		float m_time;
-		vec2 m_position;
-		std::vector<vec2> positions;
+		float speed = 5;
+		glm::vec3 m_position;
+		std::vector<vec3> positions;
 		bool automatic = false;
 
 		GLuint m_vao;

@@ -2,6 +2,7 @@
 #include "Framework/Framework.h"
 
 #include "Input/InputSystem.h"
+#include <glm/glm/gtc/type_ptr.hpp>
 
 //#define INTERLEAVE
 #define INDEX
@@ -123,7 +124,7 @@ namespace nc
         glBindVertexBuffer(1, vbo[1], 0, 3 * sizeof(GLfloat));
 #endif // INTERLEAVE
 
-
+        //m_position.z = -10.0f;
         return true;
     }
 
@@ -135,30 +136,33 @@ namespace nc
     {
         m_time += dt;
 
-        if (automatic) {
-            m_angle += 45 * dt;
-        }
-        else {
-            m_position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_A) ? -dt : 0;
-            m_position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_D) ? dt : 0;
-            m_position.x = Clamp(m_position.x, -1.0f, 1.0f);
+        m_angle += 180 * dt;
 
-            m_position.y += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_S) ? -dt : 0;
-            m_position.y += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_W) ? dt : 0;
-            m_position.y = Clamp(m_position.y, -1.0f, 1.0f);
+        m_position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_A) ? -dt * speed : 0;
+        m_position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_D) ? +dt * speed : 0;
 
-            m_angle += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_Q) ? dt * 45 : 0;
-            m_angle += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_E) ? -dt * 45 : 0;
+        m_position.z += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_W) ? -dt * speed : 0;
+        m_position.z += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_S) ? +dt * speed : 0;
 
-            
+        
+        glm::mat4 position = glm::translate(glm::mat4{ 1 }, m_position);
+        glm::mat4 rotation = glm::rotate(glm::mat4{ 1 }, m_time, glm::vec3{ 0,0,1 });
+        glm::mat4 model = position * rotation;
 
-        }
-        if (ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_SPACE) && !ENGINE.GetSystem<InputSystem>()->GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
-            automatic = !automatic;
-        }
+        GLint uniform = glGetUniformLocation(m_program->m_program, "model");
+        glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(model));
 
-        GLint uniform = glGetUniformLocation(m_program->m_program, "time");
-        glUniform1f(uniform, m_time);
+        glm::mat4 view = glm::lookAt(glm::vec3{ 0, 4, 5 }, glm::vec3{ 0,0,0 }, glm::vec3{ 0,1,0 });
+        uniform = glGetUniformLocation(m_program->m_program, "view");
+        glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(view));
+
+        //projection
+        glm::mat4 projection = glm::perspective(glm::radians(70.0f), 800.0f / 600.0f, 0.01f, 100.0f);
+        uniform = glGetUniformLocation(m_program->m_program, "projection");
+        glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(projection));
+        
+        
+
     }
 
     void World03::Draw(Renderer& renderer)

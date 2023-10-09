@@ -5,8 +5,13 @@ in layout(location = 1) vec3 color;
 
 out layout(location = 0) vec3 ocolor;
 
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
 void main()
 {
+	mat4 mvp = projection * view * model;
 	ocolor = color;
-	gl_Position = vec4(position, 1.0);
+	gl_Position = mvp * vec4(position, 1.0);
 }
