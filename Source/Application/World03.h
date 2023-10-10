@@ -18,9 +18,8 @@ namespace nc
 		float m_angle = 0;
 		float m_time;
 		float speed = 5;
-		glm::vec3 m_position;
-		std::vector<vec3> positions;
 		bool automatic = false;
+		Transform m_transform;
 
 		GLuint m_vao;
 		res_t<Program> m_program;
