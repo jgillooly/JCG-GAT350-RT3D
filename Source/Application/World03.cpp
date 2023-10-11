@@ -166,6 +166,9 @@ namespace nc
         //glm::mat4 rotation = glm::rotate(glm::mat4{ 1 }, m_time, glm::vec3{ 0,0,1 });
         //glm::mat4 model = position * rotation;
 
+        m_program->SetUniform("offset", glm::vec2{ m_time, 0 });
+        m_program->SetUniform("tiling", glm::vec2{ 4 });
+
         m_program->SetUniform("model", m_transform.GetMatrix());
 
         glm::mat4 view = glm::lookAt(glm::vec3{ 0, 0, 3 }, glm::vec3{ 0,0,0 }, glm::vec3{ 0,1,0 });
