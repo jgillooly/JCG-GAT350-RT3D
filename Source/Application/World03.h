@@ -23,6 +23,6 @@ namespace nc
 
 		GLuint m_vao;
 		res_t<Program> m_program;
-
+		res_t<Texture> m_texture;
 	};
 }

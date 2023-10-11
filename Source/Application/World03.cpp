@@ -5,6 +5,7 @@
 #include <glm/glm/gtc/type_ptr.hpp>
 #include <glm/glm/glm.hpp>
 
+
 //#define INTERLEAVE
 #define INDEX
 
@@ -13,16 +14,20 @@ namespace nc
     bool World03::Initialize()
     {
         //shaders
-        m_program = GET_RESOURCE(Program, "Shaders/unlit_color.prog");
+        m_program = GET_RESOURCE(Program, "Shaders/unlit_texture.prog");
         m_program->Use();
+
+        m_texture = GET_RESOURCE(Texture, "Textures/llama.jpg");
+        m_texture->Bind();
+        m_texture->SetActive(GL_TEXTURE0);
 
 #ifdef INTERLEAVE
         //vertex data
         float vertexData[] = {
-            -0.5f, -0.5f, 0.0f, 1.0f, 0.843f, 0.0f,
-            -0.5f, 0.5f, 0.0f, 1.0f, 0.843f, 0.0f,
-             0.5f,  0.5f, 0.0f, 1.0f, 0.647f, 0.0f,
-             0.5f,  -0.5f, 0.0f,1.0f, 0.647f, 0.0f
+            -0.5f, -0.5f, 0.0f, 1.0f, 0.843f, 0.0f, 0.0f, 0.0f,
+            -0.5f, 0.5f, 0.0f, 1.0f, 0.843f, 0.0f, 0.0f, 1.0f,
+             0.5f,  0.5f, 0.0f, 1.0f, 0.647f, 0.0f, 1.0f, 1.0f,
+             0.5f,  -0.5f, 0.0f,1.0f, 0.647f, 0.0f, 1.0f, 0.0f
         };
 
         GLuint vbo;
@@ -47,10 +52,10 @@ namespace nc
 #elif defined(INDEX)
         //vertex data
         const float vertexData[] = {
-            -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // top-left
-             1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // top-right
-             1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom-right
-            -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f  // bottom-left
+            -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,// top-left
+             1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,// top-right
+             1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,// bottom-right
+            -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f // bottom-left
         };
 
         GLuint indexes[] = {
@@ -75,7 +80,7 @@ namespace nc
         glGenVertexArrays(1, &m_vao);
         glBindVertexArray(m_vao);
 
-        glBindVertexBuffer(0, vbo, 0, 6 * sizeof(GLfloat));
+        glBindVertexBuffer(0, vbo, 0, 8 * sizeof(GLfloat));
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
@@ -86,6 +91,10 @@ namespace nc
         glEnableVertexAttribArray(1);
         glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat));
         glVertexAttribBinding(1, 0);
+
+        glEnableVertexAttribArray(2);
+        glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat));
+        glVertexAttribBinding(2, 0);
 #else
         //vertex data
         float positionData[] = {
@@ -144,7 +153,7 @@ namespace nc
 
         m_time += dt;
 
-        m_transform.rotation.z += 180 * dt;
+        //m_transform.rotation.z += 180 * dt;
 
         m_transform.position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_A) ? -dt * speed : 0;
         m_transform.position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_D) ? +dt * speed : 0;
@@ -159,7 +168,7 @@ namespace nc
 
         m_program->SetUniform("model", m_transform.GetMatrix());
 
-        glm::mat4 view = glm::lookAt(glm::vec3{ 0, 4, 5 }, glm::vec3{ 0,0,0 }, glm::vec3{ 0,1,0 });
+        glm::mat4 view = glm::lookAt(glm::vec3{ 0, 0, 3 }, glm::vec3{ 0,0,0 }, glm::vec3{ 0,1,0 });
         m_program->SetUniform("view", view);
 
         //projection
