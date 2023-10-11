@@ -151,7 +151,7 @@ namespace nc
         ImGui::DragFloat3("Position", &m_transform.position[0]);
         ImGui::DragFloat3("Scale", &m_transform.scale[0]);
         ImGui::DragFloat3("Rotation", &m_transform.rotation[0]);
-        ImGui::DragFloat2("Offset", &m_offset[0]);
+        ImGui::DragFloat2("Offset", &m_offset[0], 0.1f);
         ImGui::DragFloat2("Tiling", &m_tiling[0]);
         ImGui::End();
 
