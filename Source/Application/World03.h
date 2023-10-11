@@ -20,6 +20,8 @@ namespace nc
 		float speed = 5;
 		bool automatic = false;
 		Transform m_transform;
+		glm::vec2 m_offset{ 0 };
+		glm::vec2 m_tiling{ 1 };
 
 		GLuint m_vao;
 		res_t<Program> m_program;

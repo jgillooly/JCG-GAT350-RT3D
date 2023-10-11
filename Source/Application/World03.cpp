@@ -144,11 +144,15 @@ namespace nc
 
     void World03::Update(float dt)
     {
+        
+
         ENGINE.GetSystem<Gui>()->BeginFrame();
         ImGui::Begin("Transform");
         ImGui::DragFloat3("Position", &m_transform.position[0]);
         ImGui::DragFloat3("Scale", &m_transform.scale[0]);
         ImGui::DragFloat3("Rotation", &m_transform.rotation[0]);
+        ImGui::DragFloat2("Offset", &m_offset[0]);
+        ImGui::DragFloat2("Tiling", &m_tiling[0]);
         ImGui::End();
 
         m_time += dt;
@@ -161,13 +165,18 @@ namespace nc
         m_transform.position.z += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_W) ? -dt * speed : 0;
         m_transform.position.z += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_S) ? +dt * speed : 0;
 
+        if (ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_SPACE)) {
+            //Magic debug :)
+            std::cout << "debug";
+        }
+
         
         //glm::mat4 position = glm::translate(glm::mat4{ 1 }, m_position);
         //glm::mat4 rotation = glm::rotate(glm::mat4{ 1 }, m_time, glm::vec3{ 0,0,1 });
         //glm::mat4 model = position * rotation;
 
-        m_program->SetUniform("offset", glm::vec2{ m_time, 0 });
-        m_program->SetUniform("tiling", glm::vec2{ 4 });
+        m_program->SetUniform("offset", m_offset);
+        m_program->SetUniform("tiling", m_tiling);
 
         m_program->SetUniform("model", m_transform.GetMatrix());
 
