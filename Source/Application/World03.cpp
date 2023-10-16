@@ -51,7 +51,7 @@ namespace nc
         glVertexAttribBinding(1, 0);
 #elif defined(INDEX)
         //vertex data
-        const float vertexData[] = {
+        float vertexData[] = {
             -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,// top-left
              1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,// top-right
              1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,// bottom-right
@@ -63,38 +63,11 @@ namespace nc
             2,3,0
         };
 
-        //vertex buffer object
-        GLuint vbo;
-        glGenBuffers(1, &vbo);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
-
-        //index buffer object
-        GLuint ibo;
-        glGenBuffers(1, &ibo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
-
-        //vertex array object
-        glGenVertexArrays(1, &m_vao);
-        glBindVertexArray(m_vao);
-
-        glBindVertexBuffer(0, vbo, 0, 8 * sizeof(GLfloat));
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-        glEnableVertexAttribArray(0);
-        glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
-        glVertexAttribBinding(0, 0);
-
-        glEnableVertexAttribArray(1);
-        glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat));
-        glVertexAttribBinding(1, 0);
-
-        glEnableVertexAttribArray(2);
-        glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat));
-        glVertexAttribBinding(2, 0);
+        m_vertexBuffer = GET_RESOURCE(VertexBuffer, "vb");
+        m_vertexBuffer->CreateVertexBuffer(sizeof(vertexData), 4, vertexData);
+        m_vertexBuffer->SetAttribute(0, 3, 8 * sizeof(GLfloat), 0);                  // position 
+        m_vertexBuffer->SetAttribute(1, 3, 8 * sizeof(GLfloat), 3 * sizeof(float));  // color 
+        m_vertexBuffer->SetAttribute(2, 2, 8 * sizeof(GLfloat), 6 * sizeof(float));  // texcoord
 #else
         //vertex data
         float positionData[] = {
@@ -194,14 +167,8 @@ namespace nc
     {
         // pre-render
         renderer.BeginFrame();
-
         // render
-        glBindVertexArray(m_vao);
-#ifdef INDEX
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-#else
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-#endif
+        m_vertexBuffer->Draw(GL_TRIANGLE_STRIP);
         ENGINE.GetSystem<Gui>()->Draw();
         // post-render
         renderer.EndFrame();

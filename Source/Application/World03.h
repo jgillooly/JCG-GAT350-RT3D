@@ -23,8 +23,8 @@ namespace nc
 		glm::vec2 m_offset{ 0 };
 		glm::vec2 m_tiling{ 1 };
 
-		GLuint m_vao;
 		res_t<Program> m_program;
 		res_t<Texture> m_texture;
+		res_t<VertexBuffer> m_vertexBuffer;
 	};
 }
