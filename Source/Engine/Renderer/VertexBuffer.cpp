@@ -31,7 +31,7 @@ namespace nc
 		glGenBuffers(1, &m_vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 		// copy data into vertex buffer
-		glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 
 		
 	}
@@ -63,7 +63,7 @@ namespace nc
 		}
 
 		// copy data into index buffer
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 	}
 		
 	void VertexBuffer::SetAttribute(int attribindex, GLint size, GLsizei stride, GLuint offset)
