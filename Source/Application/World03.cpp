@@ -54,10 +54,12 @@ namespace nc
 #elif defined(INDEX)
         //vertex data
         float vertexData[] = {
-            -0.5f, -0.5f, 0.0f, 1.0f, 0.843f, 0.0f, 0.0f, 0.0f,
-            -0.5f, 0.5f, 0.0f, 1.0f, 0.843f, 0.0f, 0.0f, 1.0f,
-             0.5f,  0.5f, 0.0f, 1.0f, 0.647f, 0.0f, 1.0f, 1.0f,
-             0.5f,  -0.5f, 0.0f,1.0f, 0.647f, 0.0f, 1.0f, 0.0f
+            -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // bottom-left
+            -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,// top-left
+            1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,// bottom-right
+             1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f// top-right
+             
+            
         };
 
         m_vertexBuffer = GET_RESOURCE(VertexBuffer, "vb");
