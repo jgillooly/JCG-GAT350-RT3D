@@ -2,6 +2,7 @@
 #include "Framework/World.h"
 #include "Core/Math/Vector3.h"
 #include "Renderer/Renderer.h"
+#include "Core/Math/Transform.h"
 #include <vector>
 
 namespace nc

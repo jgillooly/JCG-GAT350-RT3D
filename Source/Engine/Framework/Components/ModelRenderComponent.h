@@ -13,7 +13,7 @@ namespace nc
 		void Update(float dt) override;
 		void Draw(class Renderer& renderer) override;
 
-		virtual float GetRadius() override { return m_model->GetRadius(); }
+		virtual float GetRadius() override { return 0; }
 
 	public:
 		std::string modelName;
