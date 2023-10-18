@@ -26,7 +26,7 @@ namespace nc
         auto material = GET_RESOURCE(Material, "materials/grid.mtrl");
         m_model = std::make_shared<Model>();
         m_model->SetMaterial(material);
-        m_model->Load("models/spot.obj");
+        m_model->Load("models/sphere.obj");
 
 
         //m_position.z = -10.0f;
@@ -43,10 +43,17 @@ namespace nc
 
         ENGINE.GetSystem<Gui>()->BeginFrame();
         ImGui::Begin("Transform");
-        ImGui::DragFloat3("Position", &m_transform.position[0]);
-        ImGui::DragFloat3("Scale", &m_transform.scale[0]);
+        ImGui::DragFloat3("Position", &m_transform.position[0], 0.1f);
+        ImGui::DragFloat3("Scale", &m_transform.scale[0], 0.1f);
         ImGui::DragFloat3("Rotation", &m_transform.rotation[0]);
         ImGui::End();
+
+        ImGui::Begin("Lighting");
+        ImGui::ColorEdit3("Ambient Light", &m_ambientLight[0]);
+        ImGui::ColorEdit3("Diffuse Light", &m_diffuseLight[0]);
+        ImGui::DragFloat3("Light Position", &m_lightPosition[0]);
+        ImGui::End();
+
 
         m_time += dt;
 
@@ -93,6 +100,7 @@ namespace nc
         // pre-render
         renderer.BeginFrame();
         // render
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         m_model->Draw();
         ENGINE.GetSystem<Gui>()->Draw();
         // post-render
