@@ -92,6 +92,11 @@ namespace nc
         glm::mat4 projection = glm::perspective(glm::radians(70.0f), 800.0f / 600.0f, 0.01f, 100.0f);
         material->GetProgram()->SetUniform("projection", projection);
 
+
+        material->GetProgram()->SetUniform("light.position", m_lightPosition);
+        material->GetProgram()->SetUniform("light.ambient", m_ambientLight);
+        material->GetProgram()->SetUniform("light.color", m_diffuseLight);
+
         ENGINE.GetSystem<Gui>()->EndFrame();
     }
 
