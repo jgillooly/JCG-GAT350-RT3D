@@ -24,7 +24,7 @@ namespace nc
 		glm::vec2 m_offset{ 0 };
 		glm::vec2 m_tiling{ 1 };
 
-		glm::vec3 m_ambientLight{ 0.2 };
+		glm::vec3 m_ambientLight{ 0.1 };
 		glm::vec3 m_diffuseLight{ 0.8 };
 		glm::vec3 m_lightPosition{ 0,8,0 };
 

@@ -26,7 +26,7 @@ namespace nc
         auto material = GET_RESOURCE(Material, "materials/grid.mtrl");
         m_model = std::make_shared<Model>();
         m_model->SetMaterial(material);
-        m_model->Load("models/sphere.obj");
+        m_model->Load("models/buddha.obj", glm::vec3(0), glm::vec3(-90, 0, 0));
 
 
         //m_position.z = -10.0f;
@@ -89,12 +89,13 @@ namespace nc
         material->GetProgram()->SetUniform("view", view);
 
         //projection
-        glm::mat4 projection = glm::perspective(glm::radians(70.0f), 800.0f / 600.0f, 0.01f, 100.0f);
+        float aspectRatio = (float)ENGINE.GetSystem<Renderer>()->GetWidth() / ENGINE.GetSystem<Renderer>()->GetHeight();
+        glm::mat4 projection = glm::perspective(glm::radians(70.0f), aspectRatio, 0.01f, 100.0f);
         material->GetProgram()->SetUniform("projection", projection);
 
 
         material->GetProgram()->SetUniform("light.position", m_lightPosition);
-        material->GetProgram()->SetUniform("light.ambient", m_ambientLight);
+        material->GetProgram()->SetUniform("ambientLight", m_ambientLight);
         material->GetProgram()->SetUniform("light.color", m_diffuseLight);
 
         ENGINE.GetSystem<Gui>()->EndFrame();
