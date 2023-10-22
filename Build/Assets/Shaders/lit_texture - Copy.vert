@@ -7,7 +7,7 @@ in layout(location = 2) vec3 vnormal;
 out layout(location = 0) vec3 oposition;
 out layout(location = 1) vec3 onormal;
 out layout(location = 2) vec2 otexcoord;
-//out layout(location = 3) vec4 ocolor;
+out layout(location = 3) vec4 ocolor;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -32,7 +32,27 @@ uniform vec3 ambientLight;
 vec3 diffuseLight = vec3(1, 1, 1);
 vec3 lightPosition = vec3(0, 8, 0);
 
+vec3 ads(in vec3 position, in vec3 normal) {
+	//ambient
+	vec3 ambient = ambientLight;
 
+	//diffuse
+	vec3 lightDirection = normalize(light.position - position);
+	float intensity = max(dot(lightDirection, normal), 0);
+	vec3 diffuse = material.diffuse * (light.color * intensity);
+
+	//specular
+	vec3 specular = vec3(0);
+	if (intensity > 0) {
+		vec3 reflection = reflect(-lightDirection, normal);
+		vec3 viewDirection = normalize(-position);
+		intensity = max(dot(reflection, viewDirection), 0);
+		intensity = pow(intensity, material.shininess);
+		specular = material.specular * intensity;
+	}
+
+	return ambient + diffuse + specular;
+}
 
 void main()
 {
@@ -44,7 +64,7 @@ void main()
 	otexcoord = (vtexcoord * material.tiling) + material.offset;
 
 
-	//ocolor = vec4(ads(oposition, onormal), 1);
+	ocolor = vec4(ads(oposition, onormal), 1);
 
 	mat4 mvp = projection * view * model;
 	gl_Position = mvp * vec4(vposition, 1.0);
