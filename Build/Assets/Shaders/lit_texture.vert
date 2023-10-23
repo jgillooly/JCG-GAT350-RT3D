@@ -22,10 +22,6 @@ uniform struct Material {
 	vec2 tiling;
 } material;
 
-uniform struct Light {
-	vec3 position;
-	vec3 color;
-} light;
 
 uniform vec3 ambientLight;
 
