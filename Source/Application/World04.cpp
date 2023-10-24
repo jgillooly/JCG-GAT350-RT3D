@@ -23,18 +23,25 @@ namespace nc
         //m_texture->Bind();
         //m_texture->SetActive(GL_TEXTURE0);
 
-        auto material = GET_RESOURCE(Material, "materials/grid.mtrl");
+        auto material = GET_RESOURCE(Material, "materials/multi.mtrl");
         m_model = std::make_shared<Model>();
         m_model->SetMaterial(material);
         m_model->Load("models/plane.obj");
 
         m_transform.position.y = -1;
 
-        m_light.type = light_t::Point;
-        m_light.color = glm::vec3(1);
-        m_light.direction = glm::vec3{ 0, -1, 0 };
-        m_light.position = glm::vec3{ 0,5,0 };
-        m_light.cutoff = 30.0f;
+        for (int i = 0; i < m_numLights; i++)
+        {
+            m_lights[i].type = light_t::Point;
+            m_lights[i].color = glm::vec3(0.5f);
+            m_lights[i].intensity = 1;
+            m_lights[i].range = 6;
+            m_lights[i].direction = glm::vec3{ 0, -1, 0 };
+            m_lights[i].position = glm::vec3{ randomf(-5.0f, 5.0f),randomf(1.0f, 8.0f),randomf(-5.0f, 5.0f)};
+            m_lights[i].innerAngle = 10.0f;
+            m_lights[i].outerAngle = 30.0f;
+        }
+        
 
 
         //m_position.z = -10.0f;
@@ -59,12 +66,19 @@ namespace nc
 
         ImGui::Begin("Lighting");
         const char* types[] = { "Point", "Directional", "Spot" };
-        ImGui::Combo("Type", (int*)(& m_light.type), types, 3);
+        ImGui::Combo("Type", (int*)(&m_lights[m_selected].type), types, 3);
         ImGui::ColorEdit3("Ambient Light", &m_ambientLight[0]);
-        ImGui::ColorEdit3("Diffuse Light", glm::value_ptr(m_light.color));
-        if(m_light.type != light_t::Directional) ImGui::DragFloat3("Light Position", glm::value_ptr(m_light.position), 0.1f);
-        if(m_light.type != light_t::Point) ImGui::DragFloat3("Direction", glm::value_ptr(m_light.direction), 0.1f);
-        if (m_light.type == light_t::Spot) ImGui::DragFloat("Cutoff", &m_light.cutoff, 1.0f, 0.0f, 90.0f);
+        ImGui::ColorEdit3("Diffuse Light", glm::value_ptr(m_lights[m_selected].color));
+        ImGui::DragFloat("Intensity", &m_lights[m_selected].intensity, 0.01f, 0.0f, 10.0f);
+        if (m_lights[m_selected].type != light_t::Directional) {
+            ImGui::DragFloat3("Light Position", glm::value_ptr(m_lights[m_selected].position), 0.1f);
+            ImGui::DragFloat("Range", &m_lights[m_selected].range, 0.1f, 0.1f, 50.0f);
+        }
+        if(m_lights[m_selected].type != light_t::Point) ImGui::DragFloat3("Direction", glm::value_ptr(m_lights[m_selected].direction), 0.1f);
+        if (m_lights[m_selected].type == light_t::Spot) {
+            ImGui::DragFloat("Inner Angle", &m_lights[m_selected].innerAngle, 1.0f, 0.0f, m_lights[m_selected].outerAngle);
+            ImGui::DragFloat("Outer Angle", &m_lights[m_selected].outerAngle, 1.0f, m_lights[m_selected].innerAngle, 90.0f);
+        }
         ImGui::End();
 
 
@@ -106,13 +120,20 @@ namespace nc
         glm::mat4 projection = glm::perspective(glm::radians(70.0f), aspectRatio, 0.01f, 100.0f);
         material->GetProgram()->SetUniform("projection", projection);
 
+        for (int i = 0; i < 3; i++)
+        {
+            std::string name = "lights[" + std::to_string(i) + "]";
+            material->GetProgram()->SetUniform(name + ".type", m_lights[i].type);
+            material->GetProgram()->SetUniform(name + ".position", m_lights[i].position);
+            material->GetProgram()->SetUniform(name + ".direction", normalize(m_lights[i].direction));
+            material->GetProgram()->SetUniform("ambientLight", m_ambientLight);
+            material->GetProgram()->SetUniform(name + ".color", m_lights[i].color);
+            material->GetProgram()->SetUniform(name + ".intensity", m_lights[i].intensity);
+            material->GetProgram()->SetUniform(name + ".range", m_lights[i].range);
+            material->GetProgram()->SetUniform(name + ".innerAngle", glm::radians(m_lights[i].innerAngle));
+            material->GetProgram()->SetUniform(name + ".outerAngle", glm::radians(m_lights[i].outerAngle));
+        }
 
-        material->GetProgram()->SetUniform("light.type", m_light.type);
-        material->GetProgram()->SetUniform("light.position", m_light.position);
-        material->GetProgram()->SetUniform("light.direction", m_light.direction);
-        material->GetProgram()->SetUniform("ambientLight", m_ambientLight);
-        material->GetProgram()->SetUniform("light.color", m_light.color);
-        material->GetProgram()->SetUniform("light.cutoff", glm::radians(m_light.cutoff));
 
         ENGINE.GetSystem<Gui>()->EndFrame();
     }
