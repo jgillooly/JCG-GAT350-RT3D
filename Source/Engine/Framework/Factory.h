@@ -5,9 +5,9 @@
 #include <map>
 #include <string>
 
-#define CREATE_CLASS(classname) nc::Factory::Instance().Create<nc::classname>(#classname);
-#define CREATE_CLASS_BASE(classbase, classname) nc::Factory::Instance().Create<nc::classbase>(classname);
-#define INSTANTIATE(classname) nc::Factory::Instance().Create<nc::Actor>(classname);
+#define CREATE_CLASS(class) nc::Factory::Instance().Create<nc::class>(#class);
+#define CREATE_CLASS_BASE(classbase, class) nc::Factory::Instance().Create<nc::classbase>(#class);
+#define INSTANTIATE(class) nc::Factory::Instance().Create<nc::Actor>(#class);
 #define INSTANTIATE_BASE(classbase, classname) nc::Factory::Instance().Create<nc::classbase>(classname);
 
 namespace nc

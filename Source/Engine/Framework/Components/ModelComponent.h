@@ -4,19 +4,19 @@
 
 namespace nc
 {
-	class ModelRenderComponent : public RenderComponent
+	class ModelComponent : public RenderComponent
 	{
 	public:
-		CLASS_DECLARATION(ModelRenderComponent)
+		CLASS_DECLARATION(ModelComponent)
 
 		bool Initialize() override;
 		void Update(float dt) override;
 		void Draw(class Renderer& renderer) override;
 
-		virtual float GetRadius() override { return 0; }
+		//virtual float GetRadius() override { return 0; }
 
 	public:
 		std::string modelName;
-		res_t<Model> m_model;
+		res_t<Model> model;
 	};
 }

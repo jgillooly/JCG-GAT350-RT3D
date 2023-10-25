@@ -4,6 +4,7 @@
 #include "Input/InputSystem.h"
 #include <glm/glm/gtc/type_ptr.hpp>
 #include <glm/glm/glm.hpp>
+#include <glm/glm/gtx/color_space.hpp>
 
 
 //#define INTERLEAVE
@@ -23,18 +24,22 @@ namespace nc
         //m_texture->Bind();
         //m_texture->SetActive(GL_TEXTURE0);
 
-        auto material = GET_RESOURCE(Material, "materials/multi.mtrl");
+        //auto material = GET_RESOURCE(Material, "materials/multi.mtrl");
+        //m_model = std::make_shared<Model>();
+        //m_model->SetMaterial(material);
+        //m_model->Load("models/plane.obj");
+
+        auto material = GET_RESOURCE(Material, "materials/squirrel.mtrl");
         m_model = std::make_shared<Model>();
         m_model->SetMaterial(material);
-        m_model->Load("models/plane.obj");
+        m_model->Load("models/squirrel.glb", glm::vec3{ 0, -0.7f, 0 }, glm::vec3{ 0 }, glm::vec3{ 0.4f });
 
         m_transform.position.y = -1;
 
         for (int i = 0; i < m_numLights; i++)
         {
             m_lights[i].type = light_t::Point;
-            m_lights[i].color = glm::vec3(0.5f);
-            m_lights[i].intensity = 1;
+            m_lights[i].color = glm::rgbColor(glm::vec3{ randomf() * 360, 1, 1 });            m_lights[i].intensity = 1;
             m_lights[i].range = 6;
             m_lights[i].direction = glm::vec3{ 0, -1, 0 };
             m_lights[i].position = glm::vec3{ randomf(-5.0f, 5.0f),randomf(1.0f, 8.0f),randomf(-5.0f, 5.0f)};
@@ -57,12 +62,18 @@ namespace nc
         
 
         ENGINE.GetSystem<Gui>()->BeginFrame();
-        ImGui::Begin("Transform");
-        ImGui::DragFloat3("Position", &m_transform.position[0], 0.1f);
-        ImGui::DragFloat3("Scale", &m_transform.scale[0], 0.1f);
-        ImGui::DragFloat3("Rotation", &m_transform.rotation[0]);
-        ImGui::End();
 
+
+        ImGui::Begin("Scene");
+        ImGui::ColorEdit3("Ambient Color", glm::value_ptr(m_ambientLight));
+        ImGui::Separator();
+
+        for (int i = 0; i < 3; i++)
+        {
+            std::string name = "light" + std::to_string(i);
+            if (ImGui::Selectable(name.c_str(), m_selected == i)) m_selected = i;
+        }
+        ImGui::End();
 
         ImGui::Begin("Lighting");
         const char* types[] = { "Point", "Directional", "Spot" };
@@ -119,6 +130,7 @@ namespace nc
         float aspectRatio = (float)ENGINE.GetSystem<Renderer>()->GetWidth() / ENGINE.GetSystem<Renderer>()->GetHeight();
         glm::mat4 projection = glm::perspective(glm::radians(70.0f), aspectRatio, 0.01f, 100.0f);
         material->GetProgram()->SetUniform("projection", projection);
+        material->GetProgram()->SetUniform("IWanttoDie", 4);
 
         for (int i = 0; i < 3; i++)
         {
