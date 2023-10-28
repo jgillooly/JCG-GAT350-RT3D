@@ -89,13 +89,6 @@ namespace nc
 
         //m_material->GetProgram()->SetUniform("model", m_transform.GetMatrix());
 
-        glm::mat4 view = glm::lookAt(glm::vec3{ 0, 0, 3 }, glm::vec3{ 0,0,0 }, glm::vec3{ 0,1,0 });
-        material->GetProgram()->SetUniform("view", view);
-
-        //projection
-        float aspectRatio = (float)ENGINE.GetSystem<Renderer>()->GetWidth() / ENGINE.GetSystem<Renderer>()->GetHeight();
-        glm::mat4 projection = glm::perspective(glm::radians(70.0f), aspectRatio, 0.01f, 100.0f);
-        material->GetProgram()->SetUniform("projection", projection);
 
 
         ENGINE.GetSystem<Gui>()->EndFrame();
