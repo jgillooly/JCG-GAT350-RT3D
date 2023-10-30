@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+//#include <glm/glm/vec3.hpp>
 #include <list>
 
 namespace nc
@@ -28,6 +29,10 @@ namespace nc
 		T* GetActorByName(const std::string& name);
 
 		void SetGame(World* game) { m_game = game; }
+		void ProcessGui();
+
+
+		glm::vec3 ambientColor;
 
 		friend class Actor;
 

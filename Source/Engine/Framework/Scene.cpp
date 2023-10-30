@@ -1,4 +1,7 @@
 #include "Scene.h"
+#include "Components/LightComponent.h"
+#include "Components/CameraComponent.h"
+//#include "Renderer/Program.h"
 #include "Framework/Components/CollisionComponent.h"
 
 namespace nc
@@ -23,6 +26,56 @@ namespace nc
 
 	void Scene::Draw(Renderer& renderer)
 	{
+		// get camera component
+		CameraComponent* camera = nullptr;
+		for (auto& actor : m_actors)
+		{
+			if (!actor->active) continue;
+
+			camera = actor->GetComponent<CameraComponent>();
+			if (camera) break;
+		}
+
+		// get light components
+		std::vector<LightComponent*> lights;
+		for (auto& actor : m_actors)
+		{
+			if (!actor->active) continue;
+
+			auto component = actor->GetComponent<LightComponent>();
+			if (component)
+			{
+				lights.push_back(component);
+			}
+		}
+
+		// get all shader programs in the resource system
+		auto programs = ResourceManager::Instance().GetAllOfType<Program>();
+		// set all shader programs camera and lights uniforms
+		for (auto& program : programs)
+		{
+			program->Use();
+
+			// set camera in shader program
+			if (camera) camera->SetProgram(program);
+
+			// set lights in shader program
+			int index = 0;
+			for (auto light : lights)
+			{
+				std::string name = "lights[" + std::to_string(index++) + "]";
+
+				light->SetProgram(program, name);
+			}
+
+
+
+			program->SetUniform("numLights", index);
+			program->SetUniform("ambientLight", ambientColor);
+		}
+
+
+
 		for (auto& actor : m_actors)
 		{
 			if (actor->active) actor->Draw(renderer);
@@ -83,6 +136,37 @@ namespace nc
 			}
 		}
 
+	}
+
+	void Scene::ProcessGui()
+	{
+		ImGui::Begin("Scene");
+		ImGui::ColorEdit3("Ambient", glm::value_ptr(ambientColor));
+		ImGui::Separator();
+
+
+
+		for (auto& actor : m_actors)
+		{
+			if (ImGui::Selectable(actor->name.c_str(), actor->guiSelect))
+			{
+				//set all actors to false
+				std::for_each(m_actors.begin(), m_actors.end(), [](auto& a) { a->guiSelect = false; });
+				//set current actor to true
+				actor->guiSelect = true;
+			}
+		}
+		ImGui::End();
+
+
+
+		ImGui::Begin("Inspector");
+		auto iter = std::find_if(m_actors.begin(), m_actors.end(), [](auto& a) { return a->guiSelect; });
+		if (iter != m_actors.end())
+		{
+			(*iter)->ProcessGui();
+		}
+		ImGui::End();
 	}
 
 }
