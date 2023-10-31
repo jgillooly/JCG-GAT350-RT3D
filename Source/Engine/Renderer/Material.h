@@ -18,7 +18,7 @@ namespace nc
 		const uint32_t NORMAL_TEXTURE_MASK   = (1 << 2);
 		const uint32_t EMISSIVE_TEXTURE_MASK = (1 << 3);
 
-
+		
 
 	public:
 		virtual bool Create(std::string filename, ...) override;
@@ -30,6 +30,7 @@ namespace nc
 		void ProcessGui();
 
 	public:
+		uint32_t params{ 0 };
 		glm::vec3 albedo{ 1 };
 		glm::vec3 specular{ 1 };
 		glm::vec3 emissive{ 0 };

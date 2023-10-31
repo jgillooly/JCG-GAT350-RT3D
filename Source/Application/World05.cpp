@@ -87,7 +87,7 @@ namespace nc
         ENGINE.GetSystem<Gui>()->BeginFrame();
         m_scene->Update(dt);
         m_scene->ProcessGui();
-        auto actor = m_scene->GetActorByName<Actor>("actor0");
+        auto actor = m_scene->GetActorByName<Actor>("actor1");
         if (actor) {
             actor->transform.position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_A) ? -dt * speed : 0;
             actor->transform.position.x += ENGINE.GetSystem<InputSystem>()->GetKeyDown(SDL_SCANCODE_D) ? +dt * speed : 0;
@@ -100,7 +100,7 @@ namespace nc
 
         auto material = actor->GetComponent<ModelComponent>()->model->GetMaterial();
         material->ProcessGui();
-        material->Bind();
+        material->Bind();;
 
         //m_transform.rotation.z += 180 * dt;
 

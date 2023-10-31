@@ -7,6 +7,10 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+	std::cout << StringUtils::CreateUnique("HELLO");
+	std::cout << StringUtils::CreateUnique("HELLO");
+	std::cout << StringUtils::CreateUnique("HELLO");
+
 	INFO_LOG("Initialize Engine...")
 
 	//nc::MemoryTracker::Initialize();

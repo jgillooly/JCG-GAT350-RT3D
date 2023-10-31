@@ -5,6 +5,7 @@
 #include "FileIO.h"
 #include "Json.h"
 //#include "Memory.h"
+#include "StringUtils.h"
 #include "Time.h"
 
 #include "Math/Color.h"

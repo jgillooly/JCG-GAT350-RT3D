@@ -27,18 +27,28 @@ namespace nc
 		READ_NAME_DATA(document, "albedoTexture", albedoTextureName);
 		if (!albedoTextureName.empty()) {
 			albedoTexture = GET_RESOURCE(Texture, albedoTextureName);
+			params |= ALBEDO_TEXTURE_MASK;
 		}
 
 		std::string specularTextureName;
 		READ_NAME_DATA(document, "specularTexture", specularTextureName);
 		if (!specularTextureName.empty()) {
 			specularTexture = GET_RESOURCE(Texture, specularTextureName);
+			params |= SPECULAR_TEXTURE_MASK;
+		}
+
+		std::string normalTextureName;
+		READ_NAME_DATA(document, "normalTexture", normalTextureName);
+		if (!normalTextureName.empty()) {
+			specularTexture = GET_RESOURCE(Texture, normalTextureName);
+			params |= SPECULAR_TEXTURE_MASK;
 		}
 
 		std::string emissiveTextureName;
 		READ_NAME_DATA(document, "emissiveTexture", emissiveTextureName);
 		if (!emissiveTextureName.empty()) {
 			emissiveTexture = GET_RESOURCE(Texture, emissiveTextureName);
+			params |= EMISSIVE_TEXTURE_MASK;
 		}
 
 		READ_DATA(document, albedo);
@@ -54,6 +64,7 @@ namespace nc
 	void Material::Bind()
 	{
 		m_program->Use();
+		m_program->SetUniform("material.params", params);
 		m_program->SetUniform("material.albedo", albedo);
 		m_program->SetUniform("material.specular", specular);
 		m_program->SetUniform("material.emissive", emissive);
@@ -64,21 +75,25 @@ namespace nc
 		if (albedoTexture) {
 			albedoTexture->SetActive(GL_TEXTURE0);
 			albedoTexture->Bind();
+			
 		}
 
 		if (specularTexture) {
 			specularTexture->SetActive(GL_TEXTURE1);
 			specularTexture->Bind();
+			
 		}
 
 		if (normalTexture) {
 			normalTexture->SetActive(GL_TEXTURE2);
 			normalTexture->Bind();
+			params |= NORMAL_TEXTURE_MASK;
 		}
 
 		if (emissiveTexture) {
 			emissiveTexture->SetActive(GL_TEXTURE3);
 			emissiveTexture->Bind();
+			
 		}
 
 	}
