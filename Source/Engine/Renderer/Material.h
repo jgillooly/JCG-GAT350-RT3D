@@ -17,7 +17,8 @@ namespace nc
 		const uint32_t SPECULAR_TEXTURE_MASK = (1 << 1);
 		const uint32_t NORMAL_TEXTURE_MASK   = (1 << 2);
 		const uint32_t EMISSIVE_TEXTURE_MASK = (1 << 3);
-
+		const uint32_t CUBEMAP_TEXTURE_MASK  = (1 << 4);
+		//11111
 		
 
 	public:
@@ -43,6 +44,7 @@ namespace nc
 		res_t<Texture> specularTexture;
 		res_t<Texture> normalTexture;
 		res_t<Texture> emissiveTexture;
+		res_t<Texture> cubemapTexture;
 
 	private:
 		res_t<Program> m_program;

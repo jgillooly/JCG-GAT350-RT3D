@@ -1,6 +1,7 @@
 #include "Material.h"
 #include "Program.h"
 #include "Texture.h"
+#include "Cubemap.h"
 #include "Core/Core.h"
 
 namespace nc
@@ -49,6 +50,14 @@ namespace nc
 		if (!emissiveTextureName.empty()) {
 			emissiveTexture = GET_RESOURCE(Texture, emissiveTextureName);
 			params |= EMISSIVE_TEXTURE_MASK;
+		}
+
+		std::string cubemapName;
+		if (READ_NAME_DATA(document, "cubemap", cubemapName)) {
+			params |= CUBEMAP_TEXTURE_MASK;
+			std::vector<std::string> cubemaps;
+			READ_DATA(document, cubemaps);
+			cubemapTexture = GET_RESOURCE(Cubemap, cubemapName, cubemaps);
 		}
 
 		READ_DATA(document, albedo);

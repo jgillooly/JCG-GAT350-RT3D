@@ -105,9 +105,9 @@ float attenuation(in vec3 position1, in vec3 position2, in float range)
 
 void main()
 {
-	vec4 albedoColor = texture(albedoTexture, ftexcoord); //vec4(material.albedo,1);
-	vec4 specularColor = texture(specularTexture, ftexcoord); //vec4(material.specular,1);
-	vec4 emissiveColor = texture(emissiveTexture, ftexcoord); //vec4(material.emissive,1);
+	vec4 albedoColor = bool(material.params & ALBEDO_TEXTURE_MASK) ? texture(albedoTexture, ftexcoord) : vec4(material.albedo, 1);
+	vec4 specularColor = bool(material.params & SPECULAR_TEXTURE_MASK) ? texture(specularTexture, ftexcoord) : vec4(material.specular, 1);
+	vec4 emissiveColor = bool(material.params & EMISSIVE_TEXTURE_MASK) ? texture(emissiveTexture, ftexcoord) : vec4(material.emissive, 1);
 	
 	//set ambient plus emissive color
 	ocolor = (vec4(ambientLight, 1) * albedoColor) + emissiveColor;
