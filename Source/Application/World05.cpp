@@ -100,7 +100,17 @@ namespace nc
 
         auto material = actor->GetComponent<ModelComponent>()->model->GetMaterial();
         material->ProcessGui();
-        material->Bind();;
+        material->Bind();
+
+        material = GET_RESOURCE(Material, "materials/refraction.mtrl");
+        if (material) {
+            ImGui::Begin("Refraction");
+            ImGui::DragFloat("IOR", &m_refraction, 0.01f, 1.0f, 3.0f);
+            auto program = material->GetProgram();
+            program->Use();
+            program->SetUniform("ior", m_refraction);
+            ImGui::End();
+        }
 
         //m_transform.rotation.z += 180 * dt;
 
