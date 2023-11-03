@@ -1,12 +1,12 @@
 {
   "program": "shaders/reflection.prog",
-  "cubemap": "night_cubemap",
+  "cubemap": "Earth",
   "cubemaps": [
-    "textures/night_cubemap/posx.jpg",
-    "textures/night_cubemap/negx.jpg",
-    "textures/night_cubemap/posy.jpg",
-    "textures/night_cubemap/negy.jpg",
-    "textures/night_cubemap/posz.jpg",
-    "textures/night_cubemap/negz.jpg"
+    "textures/Earth/posx.jpg",
+    "textures/Earth/negx.jpg",
+    "textures/Earth/posy.jpg",
+    "textures/Earth/negy.jpg",
+    "textures/Earth/posz.jpg",
+    "textures/Earth/negz.jpg"
   ]
 }
