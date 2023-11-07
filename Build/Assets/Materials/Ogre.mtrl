@@ -1,7 +1,7 @@
 {
   "program": "shaders/lit_phong.prog",
   "albedoTexture": "textures/ogre_diffuse.bmp",
-  "normalTexture": "textures/ogre_diffuse.bmp",
+  "normalTexture": "textures/ogre_normal.bmp",
   "albedo": [
     1,
     1,
