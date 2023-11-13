@@ -21,19 +21,66 @@
 		},
 		{
 			"type": "Actor",
-			"name": "cube",
+			"name": "postprocess",
+			"persistent": true,
+			"active": true,
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "models/quad.obj",
+					"materialName": "materials/postprocess.mtrl"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "camera",
 			"persistent": true,
 			"active": true,
 			"transform": {
-				"position": [ 1, 0, 0 ],
+				"position": [ 0, 0, 3 ],
+				"scale": [ 1, 1, 1 ],
+				"rotation": [ 0, 0, 0 ],
+				"euler": [ 0, 180, 0 ]
+			},
+			"components": [
+				{
+					"type": "CameraComponent",
+					"fov": 70,
+					"aspect": 1.778,
+					"near": 0.1,
+					"far": 100
+				},
+				{
+					"type": "CameraController",
+					"speed": 5,
+					"sensitivity": 0.1
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "light",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -2, 0, 0 ],
 				"scale": [ 1, 1, 1 ],
 				"rotation": [ 0, 0, 0 ]
 			},
 			"components": [
 				{
-					"type": "ModelComponent",
-					"modelName": "models/cube.obj",
-					"materialName": "materials/framebuffer.mtrl"
+					"type": "LightComponent",
+					"lightType": 0,
+					"color": [ 1, 1, 1 ],
+					"intensity": 1,
+					"range": 20,
+					"innerAngle": 10.0,
+					"outerAngle": 30.0
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 90, 0 ]
 				}
 			]
 		}

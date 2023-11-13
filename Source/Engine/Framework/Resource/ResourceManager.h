@@ -2,6 +2,7 @@
 #include "Resource.h"
 #include "Framework/Singleton.h"
 #include "Core/Logger.h"
+#include "Core/StringUtils.h"
 #include <map>
 #include <memory>
 #include <string>
@@ -33,12 +34,13 @@ namespace nc
 	template<typename T>
 	inline bool ResourceManager::Add(std::string name, res_t<T> resource)
 	{
-		if (m_resources.find(name) != m_resources.end()) {
+		auto lfilename = StringUtils::ToLower(name);
+		if (m_resources.find(lfilename) != m_resources.end()) {
 			WARNING_LOG("Resource Already Exists: " << name);
 			return false;
 		}
 
-		m_resources[name] = resource;
+		m_resources[lfilename] = resource;
 
 		return true;
 	}
@@ -46,16 +48,17 @@ namespace nc
 	template<typename T, typename ...TArgs>
 	inline res_t<T> ResourceManager::Get(const std::string& filename, TArgs ...args)
 	{
+		auto lfilename = StringUtils::ToLower(filename);
 		// find resource in resources map
-		if (m_resources.find(filename) != m_resources.end())
+		if (m_resources.find(lfilename) != m_resources.end())
 		{
 			// return resource
-			return std::dynamic_pointer_cast<T>(m_resources[filename]);
+			return std::dynamic_pointer_cast<T>(m_resources[lfilename]);
 		}
 
 		// resource not in resources map, create resource
 		res_t<T> resource = std::make_shared<T>();
-		if (!resource->Create(filename, args...))
+		if (!resource->Create(lfilename, args...))
 		{
 			// resource not created
 			WARNING_LOG("Could not create resource: " << filename);
@@ -63,7 +66,7 @@ namespace nc
 		}
 
 		// add resource to resource map, return resource
-		Add(filename, resource);
+		Add(lfilename, resource);
 		return resource;
 	}
 	template<typename T>
