@@ -19,15 +19,18 @@ namespace nc
         m_scene->Load("Scenes/scene_shadow.json");
         m_scene->Initialize();
 
+        //depth texture
         auto texture = std::make_shared<Texture>();
-        texture->CreateTexture(1024, 1024);
-        ADD_RESOURCE("fb_texture", texture);
+        texture->CreateDepthTexture(1024, 1024);
+        ADD_RESOURCE("depth_texture", texture);
 
+        //depth buffer
         auto framebuffer = std::make_shared<Framebuffer>();
-        framebuffer->CreateFramebuffer(texture);
-        ADD_RESOURCE("fb", framebuffer);
+        framebuffer->CreateDepthBuffer(texture);
+        ADD_RESOURCE("depth_buffer", framebuffer);
         
-        auto material = GET_RESOURCE(Material, "materials/postprocess.mtrl");
+        //set depth texture to debug sprite
+        auto material = GET_RESOURCE(Material, "materials/sprite.mtrl");
         if (material) {
             material->albedoTexture = texture;
         }
@@ -66,17 +69,33 @@ namespace nc
     void World07::Draw(Renderer& renderer)
     {
         //PASS 1
-        /*
-        m_scene->GetActorByName("postprocess")->active = false;
-        auto framebuffer = GET_RESOURCE(Framebuffer, "fb");
+
+        auto framebuffer = GET_RESOURCE(Framebuffer, "depth_buffer");
         renderer.setViewport(framebuffer->GetSize().x, framebuffer->GetSize().y);
         framebuffer->Bind();
 
-        renderer.BeginFrame({0,0,0});
+        renderer.ClearDepth();
+        auto program = GET_RESOURCE(Program, "shaders/shadow_depth.prog");
+        program->Use();
+
+        auto lights = m_scene->GetComponents<LightComponent>();
+        for (auto& light : lights) {
+            if (light->castShadow) {
+                glm::mat4 shadowMatrix = light->GetShadowMatrix();
+                program->SetUniform("shadowVP", shadowMatrix);
+            }
+        }
+
+        auto models = m_scene->GetComponents<ModelComponent>();
+        for (auto& model : models) {
+            program->SetUniform("model", model->m_owner->transform.GetMatrix());
+            model->model->Draw();
+        }
+
         m_scene->Draw(renderer);
 
         framebuffer->Unbind();
-        */
+
         //PASS 2
         renderer.resetViewport();
         renderer.BeginFrame();
