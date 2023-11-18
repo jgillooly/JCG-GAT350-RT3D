@@ -8,6 +8,7 @@ in layout(location = 3) vec3 vtangent;
 out layout(location = 0) vec3 oposition;
 out layout(location = 1) vec2 otexcoord;
 out layout(location = 2) mat3 otbn;
+out layout(location = 7) vec4 oshadowcoord;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -17,14 +18,15 @@ uniform struct Material {
 	uint params;
 	vec3 albedo;
 	vec3 specular;
-	float shininess;
 	vec3 emissive;
+	float shininess;
 
 	vec2 offset;
 	vec2 tiling;
 } material;
 
 uniform vec3 ambientLight;
+uniform mat4 shadowVP;
 
 vec3 diffuseLight = vec3(1, 1, 1);
 vec3 lightPosition = vec3(0, 8, 0);
@@ -34,10 +36,6 @@ vec3 lightPosition = vec3(0, 8, 0);
 void main()
 {
 
-material.albedo;
-material.specular;
-material.params;
-material.emissive;
 
 	mat4 modelView = view * model;
 
@@ -51,6 +49,7 @@ material.emissive;
 
 	otexcoord = (vtexcoord * material.tiling) + material.offset;
 
+	oshadowcoord = shadowVP * model * vec4(vposition, 1);
 
 	//ocolor = vec4(ads(oposition, onormal), 1);
 

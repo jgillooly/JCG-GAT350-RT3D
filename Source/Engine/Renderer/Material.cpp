@@ -42,7 +42,7 @@ namespace nc
 		READ_NAME_DATA(document, "normalTexture", normalTextureName);
 		if (!normalTextureName.empty()) {
 			specularTexture = GET_RESOURCE(Texture, normalTextureName);
-			params |= SPECULAR_TEXTURE_MASK;
+			params |= NORMAL_TEXTURE_MASK;
 		}
 
 		std::string emissiveTextureName;
@@ -96,7 +96,7 @@ namespace nc
 		if (normalTexture) {
 			normalTexture->SetActive(GL_TEXTURE2);
 			normalTexture->Bind();
-			params |= NORMAL_TEXTURE_MASK;
+			//params |= NORMAL_TEXTURE_MASK;
 		}
 
 		if (emissiveTexture) {

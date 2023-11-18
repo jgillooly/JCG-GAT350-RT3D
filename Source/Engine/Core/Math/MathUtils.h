@@ -54,4 +54,28 @@ namespace nc
 	{
 		return (a * (1.0f - t)) + (b * t);
 	}
+
+	template<typename T>
+	constexpr T SetBits(T a, T b)
+	{
+		return a | b;
+	}
+
+	template<typename T>
+	constexpr T ClearBits(T a, T b)
+	{
+		return a | ~b;
+	}
+
+	template<typename T>
+	constexpr bool TestBits(T a, T b)
+	{
+		return a & b;
+	}
+
+	template<typename T>
+	constexpr T ToggleBits(T a, T b)
+	{
+		return a ^= b;
+	}
 }

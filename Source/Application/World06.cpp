@@ -60,6 +60,23 @@ namespace nc
         if (ImGui::Checkbox("Grayscale", &effect)) {
             (effect) ? m_params |= GRAYSCALE_MASK : m_params &= ~GRAYSCALE_MASK;
         }
+        effect = m_params & COLORTINT_MASK;
+        if (ImGui::Checkbox("Color Tint", &effect)) {
+            (effect) ? m_params |= COLORTINT_MASK : m_params &= ~COLORTINT_MASK;
+        }
+        if (effect) ImGui::ColorEdit3("Tint", glm::value_ptr(tint));
+        effect = m_params & GRAIN_MASK;
+        if (ImGui::Checkbox("Film Grain", &effect)) {
+            (effect) ? m_params |= GRAIN_MASK : m_params &= ~GRAIN_MASK;
+        }
+        effect = m_params & SCANLINE_MASK;
+        if (ImGui::Checkbox("Scanline", &effect)) {
+            (effect) ? m_params |= SCANLINE_MASK : m_params &= ~SCANLINE_MASK;
+        }
+        effect = m_params & OUTLINE_MASK;
+        if (ImGui::Checkbox("Outline", &effect)) {
+            (effect) ? m_params |= OUTLINE_MASK : m_params &= ~OUTLINE_MASK;
+        }
         ImGui::End();
 
         //set post process shader
@@ -68,6 +85,7 @@ namespace nc
             program->Use();
             program->SetUniform("blend", m_blend);
             program->SetUniform("params", m_params);
+            program->SetUniform("tint", tint);
         }
 
         //m_transform.rotation.z += 180 * dt;

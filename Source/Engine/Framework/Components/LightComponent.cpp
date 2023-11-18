@@ -25,7 +25,14 @@ namespace nc
 		program->SetUniform(name + ".innerAngle", glm::radians(innerAngle));
 		program->SetUniform(name + ".outerAngle", glm::radians(outerAngle));
 
-		if (castShadow) program->SetUniform("shadowVP", GetShadowMatrix());
+		glm::mat4 bias = glm::mat4(
+			glm::vec4(0.5f, 0.0f, 0.0f, 0.0f),
+			glm::vec4(0.0f, 0.5f, 0.0f, 0.0f),
+			glm::vec4(0.0f, 0.0f, 0.5f, 0.0f),
+			glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+
+		if (castShadow) program->SetUniform("shadowVP", bias * GetShadowMatrix());
+		if (castShadow) program->SetUniform("shadowBias", shadowBias);
 	}
 
 	void LightComponent::ProcessGui()
@@ -46,6 +53,7 @@ namespace nc
 		if (type != Directional) ImGui::DragFloat("Range", &range, 0.1f, 0.1f, 50);
 		ImGui::Checkbox("Cast Shadows", &castShadow);
 		if (castShadow) ImGui::DragFloat("Shadow Size", &shadowSize, 0.1f, 1, 60);
+		if (castShadow) ImGui::DragFloat("Shadow Bias", &shadowBias, 0.001f, 0, 0.5f);
 
 
 	}

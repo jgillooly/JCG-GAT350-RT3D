@@ -7,11 +7,14 @@ in layout(location = 2) vec3 vnormal;
 out layout(location = 0) vec3 oposition;
 out layout(location = 1) vec3 onormal;
 out layout(location = 2) vec2 otexcoord;
+out layout(location = 3) vec4 oshadowcoord;
 //out layout(location = 3) vec4 ocolor;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+
+uniform mat4 shadowVP;
 
 uniform struct Material {
 	uint params;
@@ -46,6 +49,7 @@ material.emissive;
 	onormal = normalize(mat3(modelView) * vnormal);
 	otexcoord = (vtexcoord * material.tiling) + material.offset;
 
+	oshadowcoord = shadowVP * model * vec4(vposition, 1);
 
 	//ocolor = vec4(ads(oposition, onormal), 1);
 

@@ -230,5 +230,14 @@
     <None Include="..\..\Build\Assets\Shaders\shadow_depth.frag">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Shaders\lit_phong_normal_fixed.prog">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\lit_phong_normal_fixed.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\lit_phong_normal_fixed.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
