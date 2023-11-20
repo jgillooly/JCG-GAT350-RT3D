@@ -7,6 +7,8 @@
 
 #include "Components/Component.h"
 
+#include "Editor.h"
+
 #include "Components/CameraController.h"
 
 #include "Components/RenderComponent.h"

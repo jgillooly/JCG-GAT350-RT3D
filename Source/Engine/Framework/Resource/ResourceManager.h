@@ -42,6 +42,7 @@ namespace nc
 			return false;
 		}
 
+		resource->name = lfilename;
 		m_resources[lfilename] = resource;
 
 		return true;

@@ -38,8 +38,10 @@ namespace nc
 		glm::vec3 ambientColor;
 
 		friend class Actor;
+		friend class Editor;
 
 	private:
+		float m_dt{ 0 };
 		World* m_game = nullptr;
 		std::list<std::unique_ptr<Actor>> m_actors;
 	};
