@@ -185,6 +185,7 @@
     <None Include="..\..\Build\Assets\Materials\tree.mtrl" />
     <None Include="..\..\Build\Assets\Scenes\scene.json" />
     <None Include="..\..\Build\Assets\Scenes\scene_cell_shaded.json" />
+    <None Include="..\..\Build\Assets\Scenes\scene_editor.json" />
     <None Include="..\..\Build\Assets\Scenes\scene_fb.json" />
     <None Include="..\..\Build\Assets\Scenes\scene_shadow.json" />
     <None Include="..\..\Build\Assets\Shaders\cell_shaded.frag" />

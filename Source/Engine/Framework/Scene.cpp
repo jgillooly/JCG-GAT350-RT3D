@@ -85,6 +85,19 @@ namespace nc
 		}
 	}
 
+	void Scene::Remove(Actor* actor)
+	{
+		auto iter = m_actors.begin();
+		while (iter != m_actors.end())
+		{
+			if ((*iter).get() == actor) {
+				m_actors.erase(iter);
+				break;
+			}
+			iter++;
+		}
+	}
+
 	bool Scene::Load(const std::string& filename)
 	{
 		rapidjson::Document document;

@@ -20,6 +20,7 @@ namespace nc
 
 		void Add(std::unique_ptr<Actor> actor);
 		void RemoveAll(bool force = false);
+		void Remove(Actor* actor);
 
 		bool Load(const std::string& filename);
 		void Read(const json_t& value);
