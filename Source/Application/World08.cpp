@@ -20,6 +20,7 @@ namespace nc
         m_scene->Load("Scenes/scene_cell_shaded.json");
         m_scene->Initialize();
 
+
         m_editor = std::make_unique<Editor>();
 
         //depth texture

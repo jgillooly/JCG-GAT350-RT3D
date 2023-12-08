@@ -2,7 +2,31 @@
 	"actors": [
 		{
 			"type": "Actor",
-			"name": "Tree",
+			"name": "skybox",
+			"persistent": true,
+			"transform": {
+				"position": [ 0, 0, 0 ],
+				"scale": [ 1, 1, 1 ],
+				"rotation": [ 0, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "models/cube.obj",
+					"materialName": "materials/skybox.mtrl",
+					"enableDepth": false,
+					"cullface": "front",
+					"castShadow": false
+				},
+				{
+					"type": "RotateComponent",
+					"euler": [ 0, 90, 0 ]
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Tree1",
 			"persistent": true,
 			"active": true,
 			"transform": {
@@ -14,7 +38,7 @@
 				{
 					"type": "ModelComponent",
 					"modelName": "fantasy/obj/SF_Env_Tree_012.obj",
-					"materialName": "fantasy/fantasy_cell.mtrl",
+					"materialName": "fantasy/fantasy.mtrl",
 					"cullface": "back"
 				}
 			]
@@ -75,15 +99,95 @@
 			"active": true,
 			"transform": {
 				"position": [ -4, -1.5, 2.5 ],
-				"scale": [ 1, 1, 1 ],
+				"scale": [ 10, 1, 10 ],
 				"rotation": [ 0, 0, 0 ]
 			},
 			"components": [
 				{
 					"type": "ModelComponent",
 					"modelName": "fantasy/obj/SF_Env_Tile_Grass_01.obj",
-					"materialName": "fantasy/fantasy_cell.mtrl",
+					"materialName": "fantasy/fantasy.mtrl",
 					"cullface": "back"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "sphere",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ 1, 0, 0 ],
+				"scale": [ 0.5, 0.5, 0.5 ],
+				"rotation": [ 0, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "models/sphere.obj",
+					"materialName": "materials/reflection.mtrl",
+					"cullface": "back"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Keep",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ -3, -1.5, -3 ],
+				"scale": [ 0.1, 0.1, 0.1 ],
+				"rotation": [ 0, 45, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Bld_Castle_Keep_01.obj",
+					"materialName": "fantasy/fantasy.mtrl",
+					"cullface": "back"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Keep",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ 3, -1.5, -3 ],
+				"scale": [ 0.1, 0.1, 0.1 ],
+				"rotation": [ 0, -45, 0 ]
+			},
+			"components": [
+				{
+					"type": "ModelComponent",
+					"modelName": "fantasy/obj/SF_Bld_Castle_Keep_01.obj",
+					"materialName": "fantasy/fantasy.mtrl",
+					"cullface": "back"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "pointlight",
+			"persistent": true,
+			"active": true,
+			"transform": {
+				"position": [ 0, 10, 0 ],
+				"scale": [ 1, 1, 1 ],
+				"rotation": [ 133, 0, 0 ]
+			},
+			"components": [
+				{
+					"type": "LightComponent",
+					"lightType": 0,
+					"color": [ 1, 1, 1 ],
+					"intensity": 0.25,
+					"range": 20,
+					"innerAngle": 10.0,
+					"outerAngle": 30.0,
+					"castShadow": false
 				}
 			]
 		}
